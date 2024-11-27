@@ -20,11 +20,15 @@ client.on('message', function (topic, message) {
 // Función para encender o apagar el LED mediante MQTT
 function toggleLED() {
     let message = 'on';  // O 'off' para apagar el LED
-    client.publish('test/led1', message, { qos: 2, retain: true }, function (error) {
-        if (error) {
-            console.error('Error al enviar el mensaje:', error);
-        } else {
-            console.log('Mensaje enviado correctamente');
-        }
-    });
+    if (client.connected) {
+        client.publish('test/led1', message, { qos: 2, retain: true }, function (error) {
+            if (error) {
+                console.error('Error al enviar el mensaje:', error);
+            } else {
+                console.log('Mensaje enviado correctamente');
+            }
+        });
+    } else {
+        console.log('Cliente MQTT no está conectado');
+    }
 }
